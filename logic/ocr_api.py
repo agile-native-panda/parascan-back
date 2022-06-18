@@ -5,9 +5,17 @@ import http.client, urllib.request, urllib.parse
 import urllib.error, base64
 import ast
 
+from pdfrw import PdfReader, PdfWriter
+from pdfrw.buildxobj import pagexobj
+from pdfrw.toreportlab import makerl
+from reportlab.pdfgen import canvas
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.cidfonts import UnicodeCIDFont
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import A4, portrait
 def open_json():
     loaded_dict = {}
-    path = "./logic/key.json"
+    path = "key.json"
     with open(path, "r") as f :
         loaded_dict = json.load(f)
     return loaded_dict
@@ -49,7 +57,7 @@ def ocr_api(file_path, output_json_file):
     # Read結果取得
     result_dict = call_get_read_result_api(host, file_path, OL_url, result_headers)
     
-    print(result_dict)
+    #print(result_dict)
     with open(output_json_file, "w") as f :
         json.dump(result_dict, f, ensure_ascii = False)
 
@@ -118,5 +126,22 @@ def call_get_read_result_api(host, file_name, OL_url, result_headers):
 
     except Exception as e:
         print("[ErrNo {0}] {1}".format(e.errno,e.strerror))
-
     return result_dict
+
+def text_to_points(txt):
+    tmp = txt.split(",")
+    p = [int(tmp[0]), int(tmp[1]), int(tmp[2]), int(tmp[3])]
+    return (p[0], p[1]), (p[0]+p[2], p[1]+p[3])
+
+import cv2
+
+def format_data(ocr_data):
+    if ("analyzeResult" in ocr_data):
+        lines = [(line["boundingBox"], line["text"]) for line in ocr_data["analyzeResult"]["readResults"][0]["lines"]]
+
+    output = ""
+    for line in lines:
+        text = line[1]
+        output += text+"\n"
+    return output
+
