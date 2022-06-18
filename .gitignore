@@ -4,3 +4,4 @@ venv/
 tmp/*
 key.json
 .vscode/
+panyubi/panyubi/__pycache__/
