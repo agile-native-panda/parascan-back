@@ -12,11 +12,13 @@ def brake_video(video_name=""):
     None
     '''
     
-    PATH_TO_TMP = "./panyubi/media/video/"
+    PATH_TO_TMP = "../panyubi/media/video/"
     
     filepath = PATH_TO_TMP + video_name
+    print(filepath)
     capture = cv2.VideoCapture(filepath)
     if not capture.isOpened():
+        print("capture Error")
         return
     
     base_name = "".join(video_name.split(".")[:-1])

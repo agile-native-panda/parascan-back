@@ -34,11 +34,11 @@ def test_is_frame_to_use():
     print(is_frame_to_use(img_path))
 
 if __name__ == "__main__" :
-    video_name = "2.mp4"
+    video_name = "3.mp4"
     
     # test_decode(video_name=video_name)
-    # test_brake_to_frame(video_name)
+    test_brake_to_frame(video_name)
     #test_ocr_api()
     #test_is_frame_to_use()
-    test_foramt_data()
+    #test_foramt_data()
     

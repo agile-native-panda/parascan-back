@@ -41,6 +41,7 @@ class MediaViewSet(viewsets.ModelViewSet):
         
         try:
             file = str(request.data["video"])
+            print(file)
             brake_video(file)
         except:
             raiseExceptions("brake_vide error")
