@@ -12,7 +12,7 @@ def brake_video(video_name=""):
     None
     '''
     
-    PATH_TO_TMP = "./tmp/"
+    PATH_TO_TMP = "./panyubi/media/video/"
     
     filepath = PATH_TO_TMP + video_name
     capture = cv2.VideoCapture(filepath)

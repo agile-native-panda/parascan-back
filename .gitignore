@@ -5,3 +5,4 @@ tmp/*
 key.json
 .vscode/
 panyubi/panyubi/__pycache__/
+db.sqlite3
