@@ -2,3 +2,4 @@ panyubi/media/
 venv/
 *.pyc
 tmp/*
+key.json
