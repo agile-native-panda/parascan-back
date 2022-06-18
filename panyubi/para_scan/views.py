@@ -1,3 +1,5 @@
+from logging import raiseExceptions
+from urllib import response
 import requests
 from rest_framework.views import APIView
 
@@ -7,6 +9,10 @@ from django.http import JsonResponse
 from rest_framework import status, viewsets
 from .serializers import MediaSerializer
 from .models import Media
+import sys
+sys.path.append("../")
+from logic.brake_video import brake_video
+
 """
 class OcrRequest(APIView):
     def get(self, request):
@@ -29,3 +35,13 @@ class OcrRequest(APIView):
 class MediaViewSet(viewsets.ModelViewSet):
     queryset = Media.objects.all()
     serializer_class = MediaSerializer
+
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        
+        try:
+            file = str(request.data["video"])
+            brake_video(file)
+        except:
+            raiseExceptions("brake_vide error")
+        return response
