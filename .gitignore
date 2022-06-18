@@ -3,3 +3,4 @@ venv/
 *.pyc
 tmp/*
 key.json
+panyubi/panyubi/__pycache__/
