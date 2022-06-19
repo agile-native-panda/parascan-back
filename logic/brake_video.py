@@ -29,11 +29,16 @@ def brake_video(video_name=""):
     digit = len(str(int(capture.get(cv2.CAP_PROP_FRAME_COUNT))))
     
     n = 0
+    m = 0
     EXT = "png"
     while True:
         ret, frame = capture.read()
-        if ret:
-            cv2.imwrite('{}_{}.{}'.format(base_path, str(n).zfill(digit), EXT), frame)
+        if n%3 != 0 :
             n += 1
+            continue
+        if ret:
+            cv2.imwrite('{}_{}.{}'.format(base_path, str(m).zfill(digit), EXT), frame)
+            n += 1
+            m += 1
         else:
             return

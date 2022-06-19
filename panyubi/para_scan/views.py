@@ -52,7 +52,7 @@ class MediaViewSet(viewsets.ModelViewSet):
                 json_path = dir+"/"+image_name+".json"
                 image_path = dir+"/"+image
 
-                ocr_api(image_path, json_path)
+                # ocr_api(image_path, json_path)
         except:
             raiseExceptions("brake_vide error")
         return response
