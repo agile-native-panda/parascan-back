@@ -152,14 +152,22 @@ def format_data(json_file):
     for line in lines:
         text = line[1]
         output += text+"\n"
-
-        text_path = "/".join(json_file.split("/")[:-1])+"/result/"+str(n)+".txt"
-        n+=1
-        print(text_path)
-        with open(text_path, mode="w", encoding="utf-8") as f :
+    
+    text_path = "/".join(json_file.split("/")[:-1])+"/result/"+str(pathlib.Path(json_file).stem)+".txt"
+    print(text_path)
+    with open(text_path, mode="w", encoding="utf-8") as f :
             f.write(output)
-        result += output
-    """
+    
+def join_text(dir_path):
+    
+    result = ""
+    for text in os.listdir(dir_path):
+        with open(dir_path+"/"+text,mode="r", encoding="utf-8") as f:
+            body = f.read()
+        result+=body + ("\n")
+    with open(dir_path+"/"+"result.txt", mode="w", encoding="utf-8") as f:
+        f.write(result)
+"""
     with open("/".join(json_file.split("/")[:-1])+"/result/result.txt", mode="w", encoding="utf-8") as f:
         f.write(result)
-    """
+"""
