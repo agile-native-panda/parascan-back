@@ -5,14 +5,15 @@ from rest_framework.views import APIView
 import os
 from rest_framework.response import Response
 from rest_framework.exceptions import ParseError
-from django.http import JsonResponse
+from django.http import JsonResponse, FileResponse
 from rest_framework import status, viewsets
 from .serializers import MediaSerializer
 from .models import Media
 import sys
 sys.path.append("../")
 from logic.brake_video import brake_video
-from logic.ocr_api import ocr_api
+from logic.ocr_api import ocr_api, format_data
+import concurrent.futures
 """
 class OcrRequest(APIView):
     def get(self, request):
@@ -48,11 +49,16 @@ class MediaViewSet(viewsets.ModelViewSet):
             dir += video_name
             
             for image in os.listdir(dir):
-                image_name = name = "".join(image.split(".")[:-1])
+                image_name =  "".join(image.split(".")[:-1])
                 json_path = dir+"/"+image_name+".json"
                 image_path = dir+"/"+image
 
                 ocr_api(image_path, json_path)
+                print("-----------")
+                print(json_path)
+                format_data(json_path)
         except:
             raiseExceptions("brake_vide error")
-        return response
+        file_path = dir + "/result/" + "result.txt"
+        print(file_path)
+        return FileResponse(open(file_path, "rb"), as_attachment=True, filename="result.txt")

@@ -25,9 +25,7 @@ def test_ocr_api():
     
 def test_foramt_data():
     output_json_file = "../panyubi/media/video/3/3_000.json"
-    with open(output_json_file, "r", encoding="UTF-8") as f :
-        output_json = json.load(f)
-    print(format_data(output_json))
+    print(format_data(output_json_file))
 
 def test_is_frame_to_use():
     img_path = "./panyubi/media/video/parapara/parapara_055.png"
