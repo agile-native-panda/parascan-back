@@ -15,7 +15,7 @@ from reportlab.lib.units import inch
 from reportlab.lib.pagesizes import A4, portrait
 def open_json():
     loaded_dict = {}
-    path = "key.json"
+    path = "../logic/key.json"
     with open(path, "r") as f :
         loaded_dict = json.load(f)
     return loaded_dict
@@ -51,14 +51,14 @@ def ocr_api(file_path, output_json_file):
 
     print(OL_url)
 
-    # 処理待ち10秒
-    time.sleep(10)
+    # 処理待ち0.1秒
+    time.sleep(0.1)
 
     # Read結果取得
     result_dict = call_get_read_result_api(host, file_path, OL_url, result_headers)
     
     #print(result_dict)
-    with open(output_json_file, "w") as f :
+    with open(output_json_file, "w", encoding="utf-8") as f :
         json.dump(result_dict, f, ensure_ascii = False)
 
 # Read APIを呼ぶ関数

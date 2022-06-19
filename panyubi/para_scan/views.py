@@ -2,7 +2,7 @@ from logging import raiseExceptions
 from urllib import response
 import requests
 from rest_framework.views import APIView
-
+import os
 from rest_framework.response import Response
 from rest_framework.exceptions import ParseError
 from django.http import JsonResponse
@@ -12,7 +12,7 @@ from .models import Media
 import sys
 sys.path.append("../")
 from logic.brake_video import brake_video
-
+from logic.ocr_api import ocr_api
 """
 class OcrRequest(APIView):
     def get(self, request):
@@ -43,6 +43,16 @@ class MediaViewSet(viewsets.ModelViewSet):
             file = str(request.data["video"])
             print(file)
             brake_video(file)
+            dir = "../panyubi/media/video/"
+            video_name = "".join(file.split(".")[:-1])
+            dir += video_name
+            
+            for image in os.listdir(dir):
+                image_name = name = "".join(image.split(".")[:-1])
+                json_path = dir+"/"+image_name+".json"
+                image_path = dir+"/"+image
+
+                ocr_api(image_path, json_path)
         except:
             raiseExceptions("brake_vide error")
         return response
