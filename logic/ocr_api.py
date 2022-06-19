@@ -4,7 +4,9 @@ import datetime
 import http.client, urllib.request, urllib.parse
 import urllib.error, base64
 import ast
-
+import pathlib
+import os
+from black import out
 from pdfrw import PdfReader, PdfWriter
 from pdfrw.buildxobj import pagexobj
 from pdfrw.toreportlab import makerl
@@ -135,13 +137,37 @@ def text_to_points(txt):
 
 import cv2
 
-def format_data(ocr_data):
+def format_data(json_file):
+    with open(json_file, "r", encoding="UTF-8") as f :
+        ocr_data = json.load(f)
+    
     if ("analyzeResult" in ocr_data):
         lines = [(line["boundingBox"], line["text"]) for line in ocr_data["analyzeResult"]["readResults"][0]["lines"]]
-
+    result_path = "/".join(json_file.split("/")[:-1])+"/result/"
+    if not os.path.isdir(result_path):
+        os.mkdir(result_path)
     output = ""
+    result = ""
+    n=0
     for line in lines:
         text = line[1]
         output += text+"\n"
-    return output
-
+    
+    text_path = "/".join(json_file.split("/")[:-1])+"/result/"+str(pathlib.Path(json_file).stem)+".txt"
+    print(text_path)
+    with open(text_path, mode="w", encoding="utf-8") as f :
+            f.write(output)
+    
+def join_text(dir_path):
+    
+    result = ""
+    for text in os.listdir(dir_path):
+        with open(dir_path+"/"+text,mode="r", encoding="utf-8") as f:
+            body = f.read()
+        result+=body + ("\n")
+    with open(dir_path+"/"+"result.txt", mode="w", encoding="utf-8") as f:
+        f.write(result)
+"""
+    with open("/".join(json_file.split("/")[:-1])+"/result/result.txt", mode="w", encoding="utf-8") as f:
+        f.write(result)
+"""
