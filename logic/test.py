@@ -24,8 +24,8 @@ def test_ocr_api():
     format_data(output_json)
     
 def test_foramt_data():
-    output_json_file = "../panyubi/media/video/parapara/json/test.json"
-    with open(output_json_file, "r") as f :
+    output_json_file = "../panyubi/media/video/3/3_000.json"
+    with open(output_json_file, "r", encoding="UTF-8") as f :
         output_json = json.load(f)
     print(format_data(output_json))
 
@@ -37,8 +37,8 @@ if __name__ == "__main__" :
     video_name = "3.mp4"
     
     # test_decode(video_name=video_name)
-    test_brake_to_frame(video_name)
+    #test_brake_to_frame(video_name)
     #test_ocr_api()
     #test_is_frame_to_use()
-    #test_foramt_data()
+    test_foramt_data()
     
