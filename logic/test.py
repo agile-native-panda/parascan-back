@@ -1,7 +1,12 @@
 from decode_to_video import decode_to_video
 from brake_video import brake_video
+<<<<<<< HEAD
 from ocr_api import ocr_api, format_data
 from pre_process import is_frame_to_use, pre_process
+=======
+from ocr_api import ocr_api, format_data, join_text
+from pre_process import is_frame_to_use
+>>>>>>> b823ef2c7476fb8957f1b20cb3f2891a537059ae
 import json
 def test_decode(video_name):
     encoded_str = ""
@@ -25,9 +30,7 @@ def test_ocr_api():
     
 def test_format_data():
     output_json_file = "../panyubi/media/video/3/3_000.json"
-    with open(output_json_file, "r", encoding="UTF-8") as f :
-        output_json = json.load(f)
-    print(format_data(output_json))
+    print(format_data(output_json_file))
 
 def test_is_frame_to_use():
     img_path = "./panyubi/media/video/parapara/parapara_055.png"
@@ -37,6 +40,9 @@ def test_pre_process():
     img_directory_path = "./panyubi/media/video/4"
     pre_process(img_directory_path)
 
+def test_join_text():
+    path = "../panyubi/media/video/3/result"
+    join_text(path)
 if __name__ == "__main__" :
     video_name = "3.mp4"
     
@@ -45,5 +51,5 @@ if __name__ == "__main__" :
     # test_ocr_api()
     # test_is_frame_to_use()
     # test_format_data()
-    test_pre_process()
-    
+    # test_pre_process()
+    # test_join_text()
