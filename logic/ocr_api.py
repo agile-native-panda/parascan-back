@@ -6,6 +6,7 @@ import urllib.error, base64
 import ast
 import pathlib
 import os
+import re
 from black import out
 from pdfrw import PdfReader, PdfWriter
 from pdfrw.buildxobj import pagexobj
@@ -15,6 +16,7 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.cidfonts import UnicodeCIDFont
 from reportlab.lib.units import inch
 from reportlab.lib.pagesizes import A4, portrait
+
 def open_json():
     loaded_dict = {}
     path = "../logic/key.json"
@@ -161,7 +163,7 @@ def format_data(json_file):
 def join_text(dir_path):
     
     result = ""
-    for text in os.listdir(dir_path):
+    for text in sorted(os.listdir(dir_path), key=natural_keys):
         with open(dir_path+"/"+text,mode="r", encoding="utf-8") as f:
             body = f.read()
         result+=body + ("\n")
@@ -171,3 +173,9 @@ def join_text(dir_path):
     with open("/".join(json_file.split("/")[:-1])+"/result/result.txt", mode="w", encoding="utf-8") as f:
         f.write(result)
 """
+
+def atoi(text):
+    return int(text) if text.isdigit() else text
+
+def natural_keys(text):
+    return [ atoi(c) for c in re.split(r'(\d+)', text) ]

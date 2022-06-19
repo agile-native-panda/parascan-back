@@ -3,6 +3,7 @@ from urllib import response
 import requests
 from rest_framework.views import APIView
 import os
+import re
 from rest_framework.response import Response
 from rest_framework.exceptions import ParseError
 from django.http import JsonResponse, FileResponse
@@ -13,6 +14,7 @@ import sys
 sys.path.append("../")
 from logic.brake_video import brake_video
 from logic.ocr_api import join_text, ocr_api, format_data
+from logic.pre_process import pre_process
 import concurrent.futures
 """
 class OcrRequest(APIView):
@@ -33,6 +35,12 @@ class OcrRequest(APIView):
             raise ParseError('Request has no resource file attached')
         return JsonResponse({}, status=status.HTTP_201_CREATED)
 """
+def atoi(text):
+    return int(text) if text.isdigit() else text
+
+def natural_keys(text):
+    return [ atoi(c) for c in re.split(r'(\d+)', text) ]
+
 class MediaViewSet(viewsets.ModelViewSet):
     queryset = Media.objects.all()
     serializer_class = MediaSerializer
@@ -48,7 +56,9 @@ class MediaViewSet(viewsets.ModelViewSet):
             video_name = "".join(file.split(".")[:-1])
             dir += video_name
             
-            for image in os.listdir(dir):
+            pre_process(dir)
+            
+            for image in sorted(os.listdir(dir), key=natural_keys):
                 image_name =  "".join(image.split(".")[:-1])
                 json_path = dir+"/"+image_name+".json"
                 image_path = dir+"/"+image
