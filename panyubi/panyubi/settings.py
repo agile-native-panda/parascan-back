@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-ur=$$pm&=vi=vd4!b#%y&4ehzb!)+wh505y4=zas_#9ll5&2lz
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['parascan-env.eba-mxpwcnpx.ap-northeast-1.elasticbeanstalk.com',
+ALLOWED_HOSTS = ['parascan-37-env.eba-mxpwcnpx.ap-northeast-1.elasticbeanstalk.com',
                  '127.0.0.1']
 
 
