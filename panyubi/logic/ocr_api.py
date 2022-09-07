@@ -19,7 +19,7 @@ from reportlab.lib.pagesizes import A4, portrait
 
 def open_json():
     loaded_dict = {}
-    path = "../logic/key.json"
+    path = "./logic/key.json"
     with open(path, "r") as f :
         loaded_dict = json.load(f)
     return loaded_dict
