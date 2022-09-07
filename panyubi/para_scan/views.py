@@ -6,7 +6,7 @@ import os
 import re
 from rest_framework.response import Response
 from rest_framework.exceptions import ParseError
-from django.http import JsonResponse, FileResponse
+from django.http import JsonResponse, FileResponse, HttpResponse
 from rest_framework import status, viewsets
 from .serializers import MediaSerializer
 from .models import Media
@@ -35,6 +35,10 @@ class OcrRequest(APIView):
             raise ParseError('Request has no resource file attached')
         return JsonResponse({}, status=status.HTTP_201_CREATED)
 """
+
+def index(request):
+    return HttpResponse('nothing here.')
+
 def atoi(text):
     return int(text) if text.isdigit() else text
 
