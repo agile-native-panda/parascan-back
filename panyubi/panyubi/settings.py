@@ -25,8 +25,7 @@ SECRET_KEY = 'django-insecure-ur=$$pm&=vi=vd4!b#%y&4ehzb!)+wh505y4=zas_#9ll5&2lz
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["5f56-223-217-170-229.ngrok.io",
-                 "cacf-240b-10-84e1-f800-5c94-b7e8-4b59-a7.jp.ngrok.io","127.0.0.1"]
+ALLOWED_HOSTS = ['parascan-env.eba-mgkcpbj5.us-west-2.elasticbeanstalk.com']
 
 
 # Application definition
