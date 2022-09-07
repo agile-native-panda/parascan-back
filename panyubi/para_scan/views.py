@@ -56,7 +56,7 @@ class MediaViewSet(viewsets.ModelViewSet):
             file = str(request.data["video"])
             print(file)
             brake_video(file)
-            dir = "../panyubi/media/video/"
+            dir = "./panyubi/media/video/"
             video_name = "".join(file.split(".")[:-1])
             dir += video_name
             
