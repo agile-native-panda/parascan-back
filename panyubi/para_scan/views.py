@@ -14,7 +14,7 @@ import sys
 sys.path.append("../")
 from logic.brake_video import brake_video
 from logic.ocr_api import join_text, ocr_api, format_data
-from logic.process import pre_process, post_process
+from logic.process import pre_process, clear_files
 import concurrent.futures
 """
 class OcrRequest(APIView):
@@ -51,8 +51,9 @@ class MediaViewSet(viewsets.ModelViewSet):
         try:
             file = str(request.data["video"])
             print(file)
-            brake_video(file)
             dir = "../panyubi/media/video/"
+            clear_files(dir)
+            brake_video(file)
             video_name = "".join(file.split(".")[:-1])
             dir += video_name
             
@@ -68,7 +69,6 @@ class MediaViewSet(viewsets.ModelViewSet):
                 print(json_path)
                 format_data(json_path)
             join_text(dir+"/result")
-            post_process(dir)
         except:
             raiseExceptions("ocr process error")
         file_path = dir + "/result/" + "result.txt"
