@@ -16,6 +16,7 @@ from logic.brake_video import brake_video
 from logic.ocr_api import join_text, ocr_api, format_data
 from logic.process import pre_process, clear_files
 import concurrent.futures
+import tempfile
 """
 class OcrRequest(APIView):
     def get(self, request):
@@ -45,6 +46,21 @@ def atoi(text):
 def natural_keys(text):
     return [ atoi(c) for c in re.split(r'(\d+)', text) ]
 
+def file_return(file_path):
+    print(file_path)
+    result_file = open(file_path, "rb")
+    # print("result_file:", result_file.read())
+    result_file.seek(0)
+    tmp_file = tempfile.TemporaryFile()
+    tmp_file.write(result_file.read())
+    tmp_file.seek(0)
+    # print("tmp_file", tmp_file.read())
+    result_file.close()
+    path_to_video = "./media/video"
+    clear_files(path_to_video)
+    tmp_file.seek(0)
+    return FileResponse(tmp_file, as_attachment=True, filename="result.txt")
+
 class MediaViewSet(viewsets.ModelViewSet):
     queryset = Media.objects.all()
     serializer_class = MediaSerializer
@@ -53,17 +69,17 @@ class MediaViewSet(viewsets.ModelViewSet):
         response = super().create(request, *args, **kwargs)
         
         try:
+            dir = "./media/video/"
             file = str(request.data["video"])
-            print(file)
-            dir = "../panyubi/media/video/"
-            clear_files(dir)
             brake_video(file)
             video_name = "".join(file.split(".")[:-1])
+            
             dir += video_name
             
             pre_process(dir)
             
             for image in sorted(os.listdir(dir), key=natural_keys):
+                if "result" in image : continue
                 image_name =  "".join(image.split(".")[:-1])
                 json_path = dir+"/"+image_name+".json"
                 image_path = dir+"/"+image
@@ -76,5 +92,4 @@ class MediaViewSet(viewsets.ModelViewSet):
         except:
             raiseExceptions("ocr process error")
         file_path = dir + "/result/" + "result.txt"
-        print(file_path)
-        return FileResponse(open(file_path, "rb"), as_attachment=True, filename="result.txt")
+        return file_return(file_path)

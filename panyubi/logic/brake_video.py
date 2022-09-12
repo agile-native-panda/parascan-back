@@ -15,7 +15,6 @@ def brake_video(video_name=""):
     PATH_TO_TMP = "./media/video/"
     
     filepath = PATH_TO_TMP + video_name
-    print(filepath)
     capture = cv2.VideoCapture(filepath)
     if not capture.isOpened():
         print("capture Error")

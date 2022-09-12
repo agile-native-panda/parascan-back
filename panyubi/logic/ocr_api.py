@@ -39,6 +39,7 @@ def ocr_api(file_path, output_json_file):
                         }
     
     body = ""
+    print("ocr_api_file_path:", file_path)
     with open(file_path, "rb") as f :
         body = f.read()
 
