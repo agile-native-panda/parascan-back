@@ -65,6 +65,8 @@ def ocr_api(file_path, output_json_file):
     #print(result_dict)
     with open(output_json_file, "w", encoding="utf-8") as f :
         json.dump(result_dict, f, ensure_ascii = False)
+        
+    format_data(output_json_file)
 
 # Read APIを呼ぶ関数
 def call_read_api(host, text_recognition_url, body, params, read_headers):
@@ -143,7 +145,7 @@ import cv2
 def format_data(json_file):
     with open(json_file, "r", encoding="UTF-8") as f :
         ocr_data = json.load(f)
-    
+    lines = []
     if ("analyzeResult" in ocr_data):
         lines = [(line["boundingBox"], line["text"]) for line in ocr_data["analyzeResult"]["readResults"][0]["lines"]]
     result_path = "/".join(json_file.split("/")[:-1])+"/result/"

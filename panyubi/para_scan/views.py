@@ -1,5 +1,6 @@
 from logging import raiseExceptions
 from urllib import response
+import asyncio
 import requests
 from rest_framework.views import APIView
 import os
@@ -61,6 +62,15 @@ def file_return(file_path):
     tmp_file.seek(0)
     return FileResponse(tmp_file, as_attachment=True, filename="result.txt")
 
+def init_path(image):
+    print(image)
+    dir = "./media/video/"
+    image_dir = image.split("_")[0]
+    image_name =  "".join(image.split(".")[:-1])
+    json_path = dir + image_dir + "/" + image_name + ".json"
+    image_path = dir + image_dir + "/" + image
+    return [image_path, json_path]
+
 class MediaViewSet(viewsets.ModelViewSet):
     queryset = Media.objects.all()
     serializer_class = MediaSerializer
@@ -78,16 +88,20 @@ class MediaViewSet(viewsets.ModelViewSet):
             
             pre_process(dir)
             
-            for image in sorted(os.listdir(dir), key=natural_keys):
-                if "result" in image : continue
-                image_name =  "".join(image.split(".")[:-1])
-                json_path = dir+"/"+image_name+".json"
-                image_path = dir+"/"+image
-
-                ocr_api(image_path, json_path)
-                print("-----------")
-                print(json_path)
-                format_data(json_path)
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            
+            async def run(loop):
+                sem = asyncio.Semaphore(10)
+                async with sem:
+                    
+                    async def run_req(image_path, json_path):
+                        return await loop.run_in_executor(None, ocr_api, image_path, json_path)
+                
+                tasks = [run_req(image_path, json_path) for image_path, json_path in map(init_path, [image for image in sorted(os.listdir(dir), key=natural_keys) if "result" not in image])]
+                return await asyncio.gather(*tasks)
+                
+            loop.run_until_complete(run(loop))
             join_text(dir+"/result")
         except:
             raiseExceptions("ocr process error")
