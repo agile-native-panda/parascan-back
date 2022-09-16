@@ -33,14 +33,6 @@ def is_frame_to_use(bf, detector, img_path, pre_img_path, pre_des):
     img_num = int(img_num)
     return img_num, score_match, des
 
-def clear_files(directory_path):
-    search_path = directory_path + "/**"
-    remove_path_li = glob(search_path, recursive=True)
-    print(remove_path_li)
-    for remove_path in remove_path_li:
-        if os.path.isfile(remove_path) :
-            os.remove(remove_path)
-
 def pre_process(img_directory_path):
     search_path = img_directory_path + "/*.png"
     img_path_li = sorted(glob(search_path), key=natural_keys)
@@ -79,3 +71,15 @@ def pre_process(img_directory_path):
             file_path = img_base_path + "_" + str(img_num).zfill(digit) + EXT
             os.remove(file_path)
         
+def clear_files(directory_path, video_name):
+    search_path = directory_path + video_name + "/**"
+    remove_path_li = glob(search_path, recursive=True)
+    print(remove_path_li)
+    for remove_path in remove_path_li:
+        if os.path.isfile(remove_path) :
+            os.remove(remove_path)
+    search_path = directory_path + video_name + ".*"
+    remove_path_li = glob(search_path)
+    for remove_path in remove_path_li:
+        if os.path.isfile(remove_path) :
+            os.remove(remove_path)

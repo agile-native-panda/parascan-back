@@ -47,7 +47,7 @@ def atoi(text):
 def natural_keys(text):
     return [ atoi(c) for c in re.split(r'(\d+)', text) ]
 
-def file_return(file_path):
+def file_return(file_path, video_name):
     print(file_path)
     result_file = open(file_path, "rb")
     # print("result_file:", result_file.read())
@@ -57,9 +57,10 @@ def file_return(file_path):
     tmp_file.seek(0)
     # print("tmp_file", tmp_file.read())
     result_file.close()
-    path_to_video = "./media/video"
-    clear_files(path_to_video)
+    path_to_video = "./media/video/"
+    clear_files(path_to_video, video_name)
     tmp_file.seek(0)
+    video_name.capitalize()
     return FileResponse(tmp_file, as_attachment=True, filename="result.txt")
 
 def init_path(image):
@@ -106,4 +107,4 @@ class MediaViewSet(viewsets.ModelViewSet):
         except:
             raiseExceptions("ocr process error")
         file_path = dir + "/result/" + "result.txt"
-        return file_return(file_path)
+        return file_return(file_path, video_name)

@@ -25,9 +25,12 @@ SECRET_KEY = 'django-insecure-ur=$$pm&=vi=vd4!b#%y&4ehzb!)+wh505y4=zas_#9ll5&2lz
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+CORS_ALLOW_ALL_ORIGINS = True
+
 ALLOWED_HOSTS = ['parascan-37-env.eba-mxpwcnpx.ap-northeast-1.elasticbeanstalk.com',
                  '127.0.0.1',
-                 '172.31.14.198']
+                 '172.31.14.198',
+                 '8306-240b-10-84e1-f800-3d1b-3ae6-95de-f512.jp.ngrok.io']
 
 
 # Application definition
@@ -40,11 +43,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "para_scan",
-    "rest_framework"
+    "rest_framework",
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
