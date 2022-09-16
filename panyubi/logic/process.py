@@ -1,4 +1,3 @@
-from genericpath import isfile
 from glob import glob
 import re
 import cv2
